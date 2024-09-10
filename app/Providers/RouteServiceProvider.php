@@ -17,6 +17,8 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
+		//protected $namespace = 'App\\Http\\Controllers'; // я добавил, все равно ошибка!
+
     public const HOME = '/home';
 
     /**
