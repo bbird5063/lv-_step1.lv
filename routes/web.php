@@ -13,4 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/my-page','App\Http\Controllers\MyPlaceController@index');
+Route::get('/', function(){
+	return 'Welcome!';
+});
+
+Route::get('/posts','App\Http\Controllers\PostController@index');
