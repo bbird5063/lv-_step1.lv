@@ -20,6 +20,8 @@ Route::get('/', function(){
 Route::get('/posts','App\Http\Controllers\PostController@index');
 Route::get('/create','App\Http\Controllers\PostController@create');
 Route::get('/update','App\Http\Controllers\PostController@update');
-Route::get('/delete','App\Http\Controllers\PostController@delete'); // добавили
+Route::get('/delete','App\Http\Controllers\PostController@delete');
+Route::get('/first_or_create','App\Http\Controllers\PostController@firstOrCreate'); // добавили
+Route::get('/update_or_create','App\Http\Controllers\PostController@updateOrCreate'); // добавили
 
 Route::get('/restore','App\Http\Controllers\PostController@restore'); // я добавил

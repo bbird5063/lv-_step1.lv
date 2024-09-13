@@ -11,7 +11,7 @@ class PostController extends Controller
 	{
 		//$posts = Post::all();
 		$posts = Post::where('is_published', 1)->get(); // не забывать '->get()'(будет коллекция)
-		//$posts = Post::withTrashed()->where('is_published', 1)->get(); // удаленные тоже показывает
+ 
 		foreach ($posts as $post) {
 			dump($post->title);
 		}
@@ -90,5 +90,54 @@ class PostController extends Controller
 		$post = Post::withTrashed()->find(2); // withTrashed() - искать и в мусорке
 		$post->restore();
 		dd('restore');
+	}
+
+	public function firstOrCreate(){
+		$post = Post::find(1);
+		$anotherPost = [
+			'title' => 'Измененный 888 пост',
+			'content' => 'Контент измененного 7 поста',
+			'image' => 'image_7(изм.)',
+			'likes' =>7000,
+			'is_published' => 1,
+		];
+
+		$post = Post::firstOrCreate(
+			[
+				'title' => 'eeeeee', // 1 аргумент: контрольный массив(ключи). Если находит запись с таким 'title', то ее и возвращает. Если не находит, то создает. Он не обязательно должен быть равным элементу 2 массива, во 2 массиве его можеть и не быть
+			],[ // или $anotherPost
+				//'title' => 'qqqqq', // необязательно
+				'content' => 'Контент измененного qqqqq поста',
+				'image' => 'image_qqqqqq(изм.)',
+				'likes' => 8000,
+				'is_published' => 1,
+			]
+		);
+
+		dump($post->content);
+		dd('firstOrCreate() END');
+	}
+
+	public function updateOrCreate() {
+		$anotherPost = [
+			'title' => 'updateOrCreate() пост',
+			'content' => 'Контент updateOrCreate()',
+			'image' => 'image_99',
+			'likes' =>70,
+			'is_published' => 1,
+		];
+
+		$post = Post::updateOrCreate([
+			'title' => 'xxx',
+		],[ // или $anotherPost
+			'title' => 'Восьмой пост', // это значение может быть другим(чем в ключе выше)
+			'content' => 'Контент восьмого поста',
+			'image' => 'image_99',
+			'likes' =>70,
+			'is_published' => 1,
+		]);
+
+		dump($post->title);
+		dd('updateOrCreate');
 	}
 }
