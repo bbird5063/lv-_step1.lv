@@ -44,7 +44,7 @@ class PostController extends Controller
 		];
 		/*
 		Можно поэлементно:
-		
+
 		foreach($postArr as $item) {
 			Post::create([
 				'title' => $item['title'],
@@ -60,5 +60,19 @@ class PostController extends Controller
 		}
 
 		dd('CREADED!');
+	}
+
+	public function update() {
+		$post = Post::find(6);
+		//dd($post->title); // проверка
+		/* как и в create: */
+		$post->update([
+			'title' => 'Измененный шестой пост', // необязательно все
+			'content' => 'Контент измененного 6 поста',
+			'image' => 'image_6(изм.)',
+			'likes' => 6,
+			'is_published' => 1,
+		]);
+		dd('update!');
 	}
 }

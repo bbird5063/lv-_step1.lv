@@ -18,4 +18,5 @@ Route::get('/', function(){
 });
 
 Route::get('/posts','App\Http\Controllers\PostController@index');
-Route::get('/create','App\Http\Controllers\PostController@create'); // добавили
+Route::get('/create','App\Http\Controllers\PostController@create');
+Route::get('/update','App\Http\Controllers\PostController@update'); // добавили
