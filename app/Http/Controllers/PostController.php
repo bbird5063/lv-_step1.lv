@@ -11,6 +11,7 @@ class PostController extends Controller
 	{
 		//$posts = Post::all();
 		$posts = Post::where('is_published', 1)->get(); // не забывать '->get()'(будет коллекция)
+		//$posts = Post::withTrashed()->where('is_published', 1)->get(); // удаленные тоже показывает
 		foreach ($posts as $post) {
 			dump($post->title);
 		}
@@ -55,14 +56,15 @@ class PostController extends Controller
 			]);
 		}
 		*/
-		foreach($postArr as $item) {
+		foreach ($postArr as $item) {
 			Post::create($item);
 		}
 
 		dd('CREADED!');
 	}
 
-	public function update() {
+	public function update()
+	{
 		$post = Post::find(6);
 		//dd($post->title); // проверка
 		/* как и в create: */
@@ -74,5 +76,19 @@ class PostController extends Controller
 			'is_published' => 1,
 		]);
 		dd('update!');
+	}
+
+	public function delete()
+	{
+		$post = Post::find(2);
+		$post->delete();
+		dd('deleted');
+	}
+
+	public function restore()
+	{
+		$post = Post::withTrashed()->find(2); // withTrashed() - искать и в мусорке
+		$post->restore();
+		dd('restore');
 	}
 }
