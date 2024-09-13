@@ -7,12 +7,58 @@ use App\Models\Post; // добавили
 
 class PostController extends Controller
 {
-	public function index() {
+	public function index()
+	{
 		//$posts = Post::all();
 		$posts = Post::where('is_published', 1)->get(); // не забывать '->get()'(будет коллекция)
-		foreach($posts as $post){
+		foreach ($posts as $post) {
 			dump($post->title);
 		}
-		dd($posts);
+		dd('END');
+	}
+
+	public function create()
+	{
+		$postArr = [
+			[
+				'title' => 'Восьмой пост',
+				'content' => 'Контент восьмого поста',
+				'image' => 'image_8',
+				'likes' => 2,
+				'is_published' => 1,
+			],
+			[
+				'title' => 'Девятый пост',
+				'content' => 'Контент девятого поста',
+				'image' => 'image_9',
+				'likes' => 9,
+				'is_published' => 1,
+			],
+			[
+				'title' => 'Десятый пост',
+				'content' => 'Контент десятого поста',
+				'image' => 'image_10',
+				'likes' => 10,
+				'is_published' => 1,
+			],
+		];
+		/*
+		Можно поэлементно:
+		
+		foreach($postArr as $item) {
+			Post::create([
+				'title' => $item['title'],
+				'content' => $item['content'],
+				'image' => $item['image'],
+				'likes' => $item['likes'],
+				'is_published' => $item['is_published'],
+			]);
+		}
+		*/
+		foreach($postArr as $item) {
+			Post::create($item);
+		}
+
+		dd('CREADED!');
 	}
 }
