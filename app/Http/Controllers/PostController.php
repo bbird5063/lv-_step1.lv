@@ -8,7 +8,11 @@ use App\Models\Post; // добавили
 class PostController extends Controller
 {
 	public function index() {
-		$post = Post::find(1); // id=1, :find - статический метод от Model
-		dd($post->title);
+		//$posts = Post::all();
+		$posts = Post::where('is_published', 1)->get(); // не забывать '->get()'(будет коллекция)
+		foreach($posts as $post){
+			dump($post->title);
+		}
+		dd($posts);
 	}
 }
