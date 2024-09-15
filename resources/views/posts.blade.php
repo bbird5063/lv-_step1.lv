@@ -6,9 +6,23 @@
 @endsection
 
 @section('content')
-	@foreach($posts as $post)
-		<div>{{ $post->title }}</div>
-		<div>{{ $post->content }}</div>
-		<div>{{ $post->likes }}</div>
-	@endforeach
+<!--<table class="table"> обычная-->
+<table class="table table-dark table-striped">
+	<thead>
+		<tr>
+			<th scope="col">Title</th>
+			<th scope="col">Content</th>
+			<th scope="col">Likes</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach($posts as $post)
+		<tr>
+			<td>{{ $post->title }}</td>
+			<td>{{ $post->content }}</td>
+			<td>{{ $post->likes }}</td>
+		</tr>
+		@endforeach
+	</tbody>
+</table>
 @endsection
