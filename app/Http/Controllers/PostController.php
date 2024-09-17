@@ -4,14 +4,30 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post; // добавили
+use App\Models\Category; // добавили
 use Ramsey\Uuid\Type\Integer;
 
 class PostController extends Controller
 {
 	public function index()
 	{
-		$posts = Post::all();
-		return view('post.posts', compact('posts')); // compact() - php-функция, '$' не надо
+		// 0. Рабочий код:
+		//$posts = Post::all();
+		//return view('post.posts', compact('posts')); // compact() - php-функция, '$' не надо
+
+		// 1. Выберем все посты с собаками :
+		//$catagory = Category::find(2);
+		//$posts = Post::where('category_id', $catagory->id)->get();
+		//dd($posts);
+
+		// 2. По другому все посты с собаками (см. 'app\Models\Category.php'):
+		//$catagory = Category::find(2);
+		//dd($catagory->posts);
+
+		// Определим категорию определенного поста (см. 'app\Models\Post.php'):
+		$post = Post::find(3);
+		dd($post->category); // выводит запись из 'catigories' соответствующей 'posts'(id=3)
+
 	}
 
 	public function create()
