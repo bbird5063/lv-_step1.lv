@@ -31,4 +31,21 @@ class Post extends Model
 		 */
 		return $this->BelongsTo(Category::class, 'category_id', 'id');
 	}
+	
+	public function tags()
+	{
+		/**
+		 * Аргументы метода belongsToMany($related, $table = null, $foreignPivotKey = null, $relatedPivotKey = null, $parentKey = null, $relatedKey = null, $relation = null)
+		 * 
+		 * $related = Tag::class
+		 * $table = 'post_tags'
+		 * $foreignPivotKey = 'post_id'
+		 * $relatedPivotKey = 'tag_id'
+		 * $parentKey = null
+		 * $relatedKey = null
+		 * $relation = null
+		 */
+		return $this->belongsToMany(Tag::class, 'post_tags', 'post_id', 'tag_id');
+
+	}
 }

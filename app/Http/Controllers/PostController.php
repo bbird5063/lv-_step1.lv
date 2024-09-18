@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post; // добавили
 use App\Models\Category; // добавили
+use App\Models\Tag; // добавили
 use Ramsey\Uuid\Type\Integer;
 
 class PostController extends Controller
@@ -25,8 +26,17 @@ class PostController extends Controller
 		//dd($catagory->posts);
 
 		// Определим категорию определенного поста (см. 'app\Models\Post.php'):
-		$post = Post::find(3);
-		dd($post->category); // выводит запись из 'catigories' соответствующей 'posts'(id=3)
+		//$post = Post::find(3);
+		//dd($post->category); // выводит запись из 'catigories' соответствующей 'posts'(id=3)
+
+		// Все тэги по посту
+		//$post = Post::find(1);
+		//dd($post->tags);
+
+		// Все посты по тэгу
+		$tag = Tag::find(1);
+		dd($tag->posts);
+
 
 	}
 
