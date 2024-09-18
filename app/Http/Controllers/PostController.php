@@ -12,37 +12,14 @@ class PostController extends Controller
 {
 	public function index()
 	{
-		// 0. Рабочий код:
-		//$posts = Post::all();
-		//return view('post.posts', compact('posts')); // compact() - php-функция, '$' не надо
-
-		// 1. Выберем все посты с собаками :
-		//$catagory = Category::find(2);
-		//$posts = Post::where('category_id', $catagory->id)->get();
-		//dd($posts);
-
-		// 2. По другому все посты с собаками (см. 'app\Models\Category.php'):
-		//$catagory = Category::find(2);
-		//dd($catagory->posts);
-
-		// Определим категорию определенного поста (см. 'app\Models\Post.php'):
-		//$post = Post::find(3);
-		//dd($post->category); // выводит запись из 'catigories' соответствующей 'posts'(id=3)
-
-		// Все тэги по посту
-		//$post = Post::find(1);
-		//dd($post->tags);
-
-		// Все посты по тэгу
-		$tag = Tag::find(1);
-		dd($tag->posts);
-
-
+		$posts = Post::all();
+		return view('post.posts', compact('posts')); // 'posts' без $, т.к. здесь строка, а не переменная
 	}
 
 	public function create()
 	{
-		return view('post.create');
+		$categories = Category::all();
+		return view('post.create', compact('categories')); // 'categories' без $, т.к. здесь строка, а не переменная
 	}
 	
 	public function store() {
@@ -51,8 +28,8 @@ class PostController extends Controller
 			'content' => 'string',
 			'image' => 'string',
 			'likes' => 'integer',
+			'category_id' => 'integer',
 		]);
-
 		Post::create($data);
 		return redirect()->route('post.index');
 	}
@@ -71,7 +48,8 @@ class PostController extends Controller
 	}
 
 	public function edit(Post $post) {
-		return view('post.edit', compact('post'));
+		$categories = Category::all();
+		return view('post.edit', compact('post'), compact('categories'));
 	}
 
 	public function update(Post $post)
@@ -81,6 +59,7 @@ class PostController extends Controller
 			'content' => 'string',
 			'image' => 'string',
 			'likes' => 'integer',
+			'category_id' => 'integer',
 		]);
 		$post->update($data);
 		return redirect()->route('post.show', $post->id);

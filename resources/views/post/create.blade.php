@@ -15,7 +15,7 @@
 		</div>
 		<div class="mb-3">
 			<label for="content" class="form-label">Content</label>
-			<textarea name="content"  class="form-control" id="content" placeholder="Content"></textarea>
+			<textarea name="content" class="form-control" id="content" placeholder="Content"></textarea>
 		</div>
 		<div class="mb-3">
 			<label for="image" class="form-label">Image</label>
@@ -25,8 +25,18 @@
 			<label for="likes" class="form-label">Likes</label>
 			<input name="likes" type="number" class="form-control" id="likes" placeholder="Likes">
 		</div>
+
+		<label for="category" class="form-label">Category</label>
+		<select class="form-select" aria-label="Default select example" name="category_id" id="category">
+			<option selected>---Open this select menu---</option>
+			@foreach($categories as $category) <!-- здесь '$' надо, т.к. здесь переменная, а не строка(как в compact('categories'))-->
+			<option value="{{ $category->id}}">{{ $category->title }}</option>
+			@endforeach
+		</select>
+
 		<!--type="submit" в форме должен быть обязательно-->
-		<button type="submit" class="btn btn-primary">Create</button>
+		<!--В bootstrap-5 отступы не mb-, а mt- (https://getbootstrap.su/docs/5.0/utilities/spacing/)-->
+		<button type="submit" class="btn btn-primary mt-3">Create</button>
 	</form>
 </div>
 @endsection
