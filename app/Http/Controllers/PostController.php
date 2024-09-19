@@ -21,7 +21,8 @@ class PostController extends Controller
 	{
 		$categories = Category::all();
 		$tags = Tag::all(); // добавили
-		return view('post.create', compact('categories'), compact('tags')); // 'categories' без $, т.к. здесь строка, а не переменная
+		//return view('post.create', compact('categories'), compact('tags')); // 'categories' без $, т.к. здесь строка, а не переменная. Много compact() не надо:
+		return view('post.create', compact('categories', 'tags')); // 'categories' без $, т.к. здесь строка, а не переменная
 	}
 
 	public function store()
@@ -31,7 +32,7 @@ class PostController extends Controller
 			'content' => 'string',
 			'image' => 'string',
 			'likes' => 'integer',
-			'category_id' => 'integer',
+			'category_id' => '',
 			'tags' => '',
 		]);
 
@@ -81,7 +82,9 @@ class PostController extends Controller
 	public function edit(Post $post)
 	{
 		$categories = Category::all();
-		return view('post.edit', compact('post'), compact('categories'));
+		$tags = Tag::all(); // добавили
+		//return view('post.edit', compact('post'), compact('categories')); // Много compact()  не надо:
+		return view('post.edit', compact('post', 'categories', 'tags'));
 	}
 
 	public function update(Post $post)
@@ -91,9 +94,22 @@ class PostController extends Controller
 			'content' => 'string',
 			'image' => 'string',
 			'likes' => 'integer',
-			'category_id' => 'integer',
+			'category_id' => '',
+			'tags' => '',
 		]);
+
+		$tags = $data['tags']; // массив $tags в отдельную переменную
+		unset($data['tags']); // удаляю из $data массив $tags
+		//dd($data, $tags);
+
 		$post->update($data);
+		/**
+		 * ->attach($tags) не подойдет, т.к. ->attach($tags) добавляет(он добавит еще)
+		 * Есть др.метод sync() - он старые привязки удаляет и прибавляет новые
+		 * 
+		 */
+		$post->tags()->sync($tags);
+
 		return redirect()->route('post.show', $post->id);
 	}
 

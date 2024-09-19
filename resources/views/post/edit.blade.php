@@ -16,7 +16,7 @@
 		</div>
 		<div class="mb-3">
 			<label for="content" class="form-label">Content</label>
-			<textarea name="content"  class="form-control" id="content" placeholder="Content">{{ $post->content }}</textarea>
+			<textarea name="content" class="form-control" id="content" placeholder="Content">{{ $post->content }}</textarea>
 		</div>
 		<div class="mb-3">
 			<label for="image" class="form-label">Image</label>
@@ -26,12 +26,12 @@
 			<label for="likes" class="form-label">Likes</label>
 			<input name="likes" type="number" class="form-control" id="likes" placeholder="Likes" value="{{ $post->likes }}">
 		</div>
-
-		<label for="category" class="form-label">Category</label>
-		<select class="form-select" aria-label="Default select example" name="category_id" id="category">
-			@foreach($categories as $categ) <!-- здесь '$' надо, т.к. здесь переменная, а не строка(как в compact('categories'))-->
-			<option {{ $categ->id == $post->category->id ? ' selected' : '' }} value="{{ $categ->id}}">{{ $categ->title }}</option> 
-			<!--
+		<div class="form-group">
+			<label for="category" class="form-label">Category</label>
+			<select class="form-select" aria-label="Default select example" name="category_id" id="category">
+				@foreach($categories as $categ) <!-- здесь '$' надо, т.к. здесь переменная, а не строка(как в compact('categories'))-->
+				<option {{ $categ->id == $post->category->id ? ' selected' : '' }} value="{{ $categ->id}}">{{ $categ->title }}</option>
+				<!--
 				Mожно и '== $post->category->id'(?), и '== $post->category_id'(это понятно).
 				Специально изменил '$categories as $category' на '$categories as $categ',
 				все равно работает. Что такое '$post->category->id'?
@@ -39,8 +39,24 @@
 				В модель Post.php мы добавили метод 'category()', который и отдает всю запись `categories`, которая соответствует 'category_id' таблицы `posts`.
 				И в этот файл приходит $post(класс Post-модель) с методом 'category()'!
 			-->
-			@endforeach
-		</select>
+				@endforeach
+			</select>
+		</div>
+
+		<div class="form-group mt-3">
+			<label for="tags" class="form-label">Tags</label>
+			<select multiple class="form-select" id="tags" name="tags[]"> <!--tags[] - массив-->
+				@foreach($tags as $tag)
+				<option
+					@foreach($post->tags as $postTag)
+					{{ $tag->id == $postTag->id ? ' selected' : '' }}
+					@endforeach
+					value="{{ $tag->id}}">{{ $tag->title }}</option>
+				@endforeach
+			</select>
+		</div>
+
+
 
 		<!--type="submit" в форме должен быть обязательно-->
 		<!--В bootstrap-5 отступы не mb-, а mt- (https://getbootstrap.su/docs/5.0/utilities/spacing/)-->
