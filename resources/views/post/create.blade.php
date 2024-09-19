@@ -26,13 +26,24 @@
 			<input name="likes" type="number" class="form-control" id="likes" placeholder="Likes">
 		</div>
 
-		<label for="category" class="form-label">Category</label>
-		<select class="form-select" aria-label="Default select example" name="category_id" id="category">
-			<option selected>---Open this select menu---</option>
-			@foreach($categories as $category) <!-- здесь '$' надо, т.к. здесь переменная, а не строка(как в compact('categories'))-->
-			<option value="{{ $category->id}}">{{ $category->title }}</option>
-			@endforeach
-		</select>
+		<div class="form-group">
+			<label for="category" class="form-label">Category</label>
+			<select class="form-select" aria-label="Default select example" name="category_id" id="category">
+				<option selected>---Open this select menu---</option>
+				@foreach($categories as $category) <!-- здесь '$' надо, т.к. здесь переменная, а не строка(как в compact('categories'))-->
+				<option value="{{ $category->id}}">{{ $category->title }}</option>
+				@endforeach
+			</select>
+		</div>
+
+		<div class="form-group mt-3">
+			<label for="tags" class="form-label">Tags</label>
+			<select multiple class="form-select" id="tags" name="tags[]"> <!--tags[] - массив-->
+				@foreach($tags as $tag)
+				<option value="{{ $tag->id }}">{{ $tag->title }}</option>
+				@endforeach
+			</select>
+		</div>
 
 		<!--type="submit" в форме должен быть обязательно-->
 		<!--В bootstrap-5 отступы не mb-, а mt- (https://getbootstrap.su/docs/5.0/utilities/spacing/)-->

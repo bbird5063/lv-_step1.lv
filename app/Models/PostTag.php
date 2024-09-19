@@ -7,5 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class PostTag extends Model
 {
-    use HasFactory;
+	use HasFactory;
+
+	/* МОДЕЛЬ ЗАЩИЩЕНА ОН ДОБАВЛЕНИЙ, ПОЭТОМУ: */
+	//protected $guarded = []; // можно добавлять ЛЮБЫЕ массивы или false(откл. защита):
+	protected $guarded = false;
+	//protected $fillable = ['title', 'content',...]; // если с атрибутами
+
 }

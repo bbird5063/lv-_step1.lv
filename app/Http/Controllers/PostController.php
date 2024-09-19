@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post; // добавили
 use App\Models\Category; // добавили
+use App\Models\PostTag;
 use App\Models\Tag; // добавили
 use Ramsey\Uuid\Type\Integer;
 
@@ -19,18 +20,47 @@ class PostController extends Controller
 	public function create()
 	{
 		$categories = Category::all();
-		return view('post.create', compact('categories')); // 'categories' без $, т.к. здесь строка, а не переменная
+		$tags = Tag::all(); // добавили
+		return view('post.create', compact('categories'), compact('tags')); // 'categories' без $, т.к. здесь строка, а не переменная
 	}
-	
-	public function store() {
+
+	public function store()
+	{
 		$data = request()->validate([
 			'title' => 'string',
 			'content' => 'string',
 			'image' => 'string',
 			'likes' => 'integer',
 			'category_id' => 'integer',
+			'tags' => '',
 		]);
-		Post::create($data);
+
+
+		//// 1. ПЕРВЫЙ СПОСОБ
+		//// Разделяю массив обычных переменных $data и массив $tags:
+		//$tags = $data['tags']; // массив $tags в отдельную переменную
+		//unset($data['tags']); // удаляю из $data массив $tags
+		////dd($data, $tags);
+
+		//$post = Post::create($data); // мы получим новый пост, а из него id
+		//foreach ($tags as $tag) {
+		//	PostTag::firstOrCreate([ // firstOrCreate- если нашел, то верни. Если не нашел, то создвй.
+		//		'tag_id' => $tag,
+		//		'post_id' => $post->id,
+		//	]);
+
+		// 2. БОЛЕЕ ПРОФЕССИОНАЛЬНЫЙ СПОСОБ (->attach())
+		// Разделяю массив обычных переменных $data и массив $tags:
+		$tags = $data['tags']; // массив $tags в отдельную переменную
+		unset($data['tags']); // удаляю из $data массив $tags
+		//dd($data, $tags);
+
+		$post = Post::create($data); // мы получим новый пост, а из него id
+
+		$post->tags()->attach($tags); // tags()-продолжаем запрос в базу в Post@tags(), а tags без () - массив из метода Post@tags() (return)
+
+		
+
 		return redirect()->route('post.index');
 	}
 
@@ -43,11 +73,13 @@ class PostController extends Controller
 		'Post $post' ($post-название переменной как в роутере {post})
 		и Laravel сделает все это за нас!
 	*/
-	public function show(Post $post) {
+	public function show(Post $post)
+	{
 		return view('post.show', compact('post'));
 	}
 
-	public function edit(Post $post) {
+	public function edit(Post $post)
+	{
 		$categories = Category::all();
 		return view('post.edit', compact('post'), compact('categories'));
 	}
@@ -65,13 +97,14 @@ class PostController extends Controller
 		return redirect()->route('post.show', $post->id);
 	}
 
-	public function destroy(Post $post){ // delete
+	public function destroy(Post $post)
+	{ // delete
 		$post->delete();
 		return redirect()->route('post.index');
 	}
 
 
-//===Остальные методы исользовались для изучения и для сайта не нужны===
+	//===Остальные методы исользовались для изучения и для сайта не нужны===
 
 	public function delete()
 	{
