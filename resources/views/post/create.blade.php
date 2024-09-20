@@ -11,27 +11,46 @@
 		@csrf <!--без @csrf при любом роуте, кроме GET - ошибка (типа '419 PAGE EXPIRED'), а у нас POST-->
 		<div class="mb-3">
 			<label for="title" class="form-label">Title</label>
-			<input name="title" type="text" class="form-control" id="title" placeholder="Title">
+			<!--Добавили value="{{ old('') }}"-->
+			<input name="title" type="text" class="form-control" id="title" placeholder="Title" value="{{ old('title') }}">
+
+			@error('title')
+			<p class="text-danger">{{ $message }}</p>
+			@enderror
 		</div>
 		<div class="mb-3">
 			<label for="content" class="form-label">Content</label>
-			<textarea name="content" class="form-control" id="content" placeholder="Content"></textarea>
+			<textarea name="content" class="form-control" id="content" placeholder="Content">{{ old('content') }}</textarea>
+
+			@error('content')
+			<p class="text-danger">{{ $message }}</p>
+			@enderror
 		</div>
 		<div class="mb-3">
 			<label for="image" class="form-label">Image</label>
-			<input name="image" type="text" class="form-control" id="image" placeholder="Image">
+			<input name="image" type="text" class="form-control" id="image" placeholder="Image" value="{{ old('image') }}">
+
+			@error('image')
+			<p class="text-danger">{{ $message }}</p>
+			@enderror
 		</div>
-		<div class="mb-3">
+		<!--<div class="mb-3">
 			<label for="likes" class="form-label">Likes</label>
-			<input name="likes" type="number" class="form-control" id="likes" placeholder="Likes">
-		</div>
+			<input name="likes" type="number" class="form-control" id="likes" placeholder="Likes" value="{{ old('likes') }}">
+
+			@error('likes')
+			<p class="text-danger">{{ $message }}</p>
+			@enderror
+		</div>-->
 
 		<div class="form-group">
 			<label for="category" class="form-label">Category</label>
 			<select class="form-select" aria-label="Default select example" name="category_id" id="category">
-				<option selected>---Open this select menu---</option>
+				<!--<option selected>---Open this select menu---</option>-->
 				@foreach($categories as $category) <!-- здесь '$' надо, т.к. здесь переменная, а не строка(как в compact('categories'))-->
-				<option value="{{ $category->id}}">{{ $category->title }}</option>
+				<option 
+					{{ old('category_id') == $category->id ? ' selected' : ''  }} 
+					value="{{ $category->id}}">{{ $category->title }}</option>
 				@endforeach
 			</select>
 		</div>

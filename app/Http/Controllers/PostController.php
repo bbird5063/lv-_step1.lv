@@ -33,7 +33,7 @@ class PostController extends Controller
 			'image' => 'string',
 			'likes' => 'integer',
 			'category_id' => '',
-			'tags' => '',
+			'tags' =>'',
 		]);
 
 
@@ -52,6 +52,8 @@ class PostController extends Controller
 
 		// 2. БОЛЕЕ ПРОФЕССИОНАЛЬНЫЙ СПОСОБ (->attach())
 		// Разделяю массив обычных переменных $data и массив $tags:
+		
+		//dd(isset($data['tags'])); // если не выбран ни один tag - false
 		$tags = $data['tags']; // массив $tags в отдельную переменную
 		unset($data['tags']); // удаляю из $data массив $tags
 		//dd($data, $tags);
