@@ -14,7 +14,10 @@ Route::group(['namespace' => 'App\Http\Controllers\Post'], function () {
 	Route::delete('/posts/{post}', 'DestroyController')->name('post.destroy');
 });
 
-Route::get('/', 'App\Http\Controllers\MainController@index')->name('main.index');
+//Route::get('/', 'App\Http\Controllers\MainController@index')->name('main.index'); // работает
+use App\Http\Controllers\MainController;
+Route::get('/', [MainController::class, 'index'])->name('main.index'); // работает
+
 Route::get('/about', 'App\Http\Controllers\AboutController@index')->name('about.index');
 Route::get('/contact', 'App\Http\Controllers\ContactController@index')->name('contact.index');
 

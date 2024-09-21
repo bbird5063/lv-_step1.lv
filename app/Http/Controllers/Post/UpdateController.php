@@ -4,23 +4,14 @@ namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
-use App\Models\Category;
-//use App\Models\PostTag;
-use App\Models\Tag;
+use App\Http\Requests\Post\UpdateRequest; 
 
 
 class UpdateController extends Controller
 {
-	public function __invoke(Post $post)
+	public function __invoke(UpdateRequest $request, Post $post)
 	{
-		$data = request()->validate([
-			'title' => 'string',
-			'content' => 'string',
-			'image' => 'string',
-			'likes' => 'integer',
-			'category_id' => '',
-			'tags' => '',
-		]);
+		$data = $request->validated();
 
 		if (!isset($data['tags'])) $data['tags'] = []; // РАБОТАЕТ!
 
