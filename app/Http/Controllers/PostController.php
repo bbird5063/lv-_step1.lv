@@ -2,18 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
 use App\Models\Post; // добавили
 use App\Models\Category; // добавили
-use App\Models\PostTag;
+//use App\Models\PostTag;
 use App\Models\Tag; // добавили
-use Ramsey\Uuid\Type\Integer;
+//use Ramsey\Uuid\Type\Integer;
 
 class PostController extends Controller
 {
 	public function index()
 	{
 		$posts = Post::all();
+
+		//$post = Post::find(1); // проверка 1
+		//dd($post->category); // проверка 1
+		
+		//$category = Category::find(2); // проверка 2 (2-их больше)
+		//dd($category->posts); // проверка 2
+
+		//$tag = Tag::find(3); // проверка 3 (3-их больше)
+		//dd($tag->posts); // проверка 3
+
+		$post = Post::find(1); // проверка 4
+		dd($post->tags); // проверка 4
+
 		return view('post.posts', compact('posts')); // 'posts' без $, т.к. здесь строка, а не переменная
 	}
 
