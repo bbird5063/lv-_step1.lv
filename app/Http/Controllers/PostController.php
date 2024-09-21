@@ -15,18 +15,6 @@ class PostController extends Controller
 	{
 		$posts = Post::all();
 
-		//$post = Post::find(1); // проверка 1
-		//dd($post->category); // проверка 1
-		
-		//$category = Category::find(2); // проверка 2 (2-их больше)
-		//dd($category->posts); // проверка 2
-
-		//$tag = Tag::find(3); // проверка 3 (3-их больше)
-		//dd($tag->posts); // проверка 3
-
-		$post = Post::find(1); // проверка 4
-		dd($post->tags); // проверка 4
-
 		return view('post.posts', compact('posts')); // 'posts' без $, т.к. здесь строка, а не переменная
 	}
 
@@ -203,3 +191,4 @@ class PostController extends Controller
 		dd('updateOrCreate');
 	}
 }
+
