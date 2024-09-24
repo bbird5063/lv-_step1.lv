@@ -9,7 +9,9 @@ class IndexController extends BaseController // изменили на BaseContro
 {
 	public function __invoke()
 	{
-		$posts = Post::all();
+		//$posts = Post::all(); // Вместо all() используем paginate()
+		$posts = Post::paginate(10); // Вместо all() используем paginate()
+		//dd($posts);
 
 		return view('post.posts', compact('posts'));
 	}
