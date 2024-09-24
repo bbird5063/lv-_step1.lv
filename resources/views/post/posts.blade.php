@@ -38,6 +38,7 @@
 
 <div>
 	<!--$posts уже другой объект ($posts = Post::paginate...), у есть метод links()-->
-	{{ $posts->links() }} 
+	<!--'->withQueryString->' - с учетом фильтра-->
+	{{ $posts->withQueryString()->links() }}
 </div>
 @endsection
