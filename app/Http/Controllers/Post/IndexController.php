@@ -15,13 +15,8 @@ class IndexController extends BaseController // изменили на BaseContro
 		$data = $request->validated();
 
 		$filter = app()->make(PostFilter::class, ['queryParams' => array_filter($data)]);
-		
-		$posts = Post::filter($filter)->paginate(10); // фильтр работает
+		$posts = Post::filter($filter)->paginate(10);
 
-		//dd($filter); // фильтр работает
-		//dd($posts); // фильтр работает, назвать надо по другому
-
-		$posts = Post::paginate(10); // Вместо all() используем paginate(), если закоментировать эту строку, то фильтруется
 		return view('post.posts', compact('posts'));
 	}
 }

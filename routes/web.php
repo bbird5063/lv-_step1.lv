@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use League\Flysystem\PathPrefixer;
+
 //use App\Http\Controllers\Post;
 //use App\Http\Controllers\Post\IndexController;
 
@@ -13,6 +15,19 @@ Route::group(['namespace' => 'App\Http\Controllers\Post'], function () {
 	Route::patch('/posts/{post}', 'UpdateController')->name('post.update');
 	Route::delete('/posts/{post}', 'DestroyController')->name('post.destroy');
 });
+
+use App\Http\Controllers\Admin\Post\IndexController;
+Route::group(['namespace' => 'Admin', 'Prefix' => 'admin'], function () {
+	Route::group(['namespace' => 'Post'], function () {
+		Route::get('/admin/post', [IndexController::class, '__invoke'])->name('admin.post.index'); // работает только так
+	});
+});
+
+//Route::group(['namespace' => 'Admin', 'Prefix' => 'admin'], function () {
+//	Route::group(['namespace' => 'Post'], function () {
+//		Route::get('/post', 'IndexController')->name('admin.post.index');
+//	});
+//}); // LVC - не работает
 
 //Route::get('/', 'App\Http\Controllers\MainController@index')->name('main.index'); // работает
 use App\Http\Controllers\MainController;
