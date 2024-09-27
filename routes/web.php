@@ -16,11 +16,17 @@ Route::group(['namespace' => 'App\Http\Controllers\Post'], function () {
 	Route::delete('/posts/{post}', 'DestroyController')->name('post.destroy');
 });
 
-use App\Http\Controllers\Admin\Post\IndexController;
-Route::group(['namespace' => 'Admin', 'Prefix' => 'admin'], function () {
+//use App\Http\Controllers\Admin\Post\IndexController;
+//Route::group(['namespace' => 'Admin', 'Prefix' => 'admin'], function () {
+//	Route::group(['namespace' => 'Post'], function () {
+//		Route::get('/admin/post', [IndexController::class, '__invoke'])->name('admin.post.index'); // работает только так или ниже...
+//	});
+//});
+
+Route::group(['namespace' => 'App\Http\Controllers\Admin', 'Prefix' => 'admin'], function () {
 	Route::group(['namespace' => 'Post'], function () {
-		Route::get('/admin/post', [IndexController::class, '__invoke'])->name('admin.post.index'); // работает только так
-	});
+		Route::get('/admin/post', 'IndexController')->name('admin.post.index');
+	}); // работает только так: '/admin/post', а не '/post'
 });
 
 //Route::group(['namespace' => 'Admin', 'Prefix' => 'admin'], function () {
@@ -31,10 +37,17 @@ Route::group(['namespace' => 'Admin', 'Prefix' => 'admin'], function () {
 
 //Route::get('/', 'App\Http\Controllers\MainController@index')->name('main.index'); // работает
 use App\Http\Controllers\MainController;
-Route::get('/', [MainController::class, 'index'])->name('main.index'); // работает
+Route::get('/main', [MainController::class, 'index'])->name('main.index'); // работает
 
 Route::get('/about', 'App\Http\Controllers\AboutController@index')->name('about.index');
 Route::get('/contact', 'App\Http\Controllers\ContactController@index')->name('contact.index');
 
 //Route::get('/posts/{post}/edit','App\Http\Controllers\PostController@edit')->name('post.edit');
 //Route::patch('/posts/{post}','App\Http\Controllers\PostController@update')->name('post.update');
+
+use Illuminate\Support\Facades\Auth; // добавил
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index']); // добавил
