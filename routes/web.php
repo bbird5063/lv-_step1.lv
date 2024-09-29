@@ -23,7 +23,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Post'], function () {
 //	});
 //});
 
-Route::group(['namespace' => 'App\Http\Controllers\Admin', 'Prefix' => 'admin'], function () {
+Route::group(['namespace' => 'App\Http\Controllers\Admin', 'Prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::group(['namespace' => 'Post'], function () {
 		Route::get('/admin/post', 'IndexController')->name('admin.post.index');
 	}); // работает только так: '/admin/post', а не '/post'
@@ -37,6 +37,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin', 'Prefix' => 'admin'],
 
 //Route::get('/', 'App\Http\Controllers\MainController@index')->name('main.index'); // работает
 use App\Http\Controllers\MainController;
+
 Route::get('/main', [MainController::class, 'index'])->name('main.index'); // работает
 
 Route::get('/about', 'App\Http\Controllers\AboutController@index')->name('about.index');
@@ -49,5 +50,4 @@ use Illuminate\Support\Facades\Auth; // добавил
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index']); // добавил
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home'); // добавил
