@@ -7,6 +7,7 @@ use App\Http\Requests\Post\FilterRequest;
 use App\Models\Post;
 
 use App\Http\Filters\PostFilter; // я добавил
+use App\Http\Resources\Post\PostResource; // добавил сам (ОБЯЗАТЕЛЬНО ЗАГЛАВНАЯ "A"!!!)
 
 class IndexController extends BaseController // изменили на BaseController
 {
@@ -19,9 +20,25 @@ class IndexController extends BaseController // изменили на BaseContro
 
 		$data = $request->validated();
 
-		$filter = app()->make(PostFilter::class, ['queryParams' => array_filter($data)]);
-		$posts = Post::filter($filter)->paginate(10);
+		$page = $data['page'] ?? 1; // добавили ('??'-если этого нет)
+		$perPage = $data['per_page'] ?? 10; // добавили ('??'-если этого нет)
 
-		return view('post.posts', compact('posts'));
+
+		$filter = app()->make(PostFilter::class, ['queryParams' => array_filter($data)]);
+		//$posts = Post::filter($filter)->paginate(10);
+		$posts = Post::filter($filter)->paginate($perPage, ['*'], 'page', $page); // вместо 10
+
+		/**
+		 * paginate
+		 * --------------
+		 * $perPage
+		 * ['*']
+		 * 'page'
+		 * $page
+		 */
+
+		return PostResource::collection($posts);
+
+		//return view('post.posts', compact('posts'));
 	}
 }

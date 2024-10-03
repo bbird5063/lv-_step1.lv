@@ -13,5 +13,6 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
 			'/posts', // для тестирования в Postman
+			'/posts/*', // для update
     ];
 }

@@ -33,8 +33,10 @@ class Service
 		//dd($data, $tags);
 
 		$post = Post::create($data); // мы получим новый пост, а из него id
-
+     
 		$post->tags()->attach($tags); // tags()-продолжаем запрос в базу в Post@tags(), а tags без () - массив из метода Post@tags() (return)
+
+		return $post; // добавили
 	}
 
 
@@ -54,5 +56,7 @@ class Service
 		 * 
 		 */
 		$post->tags()->sync($tags);
+		//$post = $post->fresh(); // ДОБАВИЛ: принудительное обновление
+		return $post->fresh(); // можно так
 	}
 }
