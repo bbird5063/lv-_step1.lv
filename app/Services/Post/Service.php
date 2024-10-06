@@ -3,40 +3,37 @@
 namespace App\Services\Post;
 
 use App\Models\Post;
+use App\Models\Category; // добавили
+use App\Models\Tag; // добавили
+use Illuminate\Support\Facades\DB;
 
 class Service
 {
 	public function store($data)
 	{
-		//// 1. ПЕРВЫЙ СПОСОБ
-		//// Разделяю массив обычных переменных $data и массив $tags:
-		//$tags = $data['tags']; // массив $tags в отдельную переменную
-		//unset($data['tags']); // удаляю из $data массив $tags
-		////dd($data, $tags);
+		try{
+			DB::beginTransaction();
+			
+			$tags = $data['tags'];
+			$category = $data['category'];
+			unset($data['tags'], $data['category']);
+	
+			$tagIds = $this->getTagIgs($tags);
+			$data['category_id'] = $this->getCategoryId($category);
+	
+			$post = Post::create($data);
+	
+			$post->tags()->attach($tagIds);
 
-		//$post = Post::create($data); // мы получим новый пост, а из него id
-		//foreach ($tags as $tag) {
-		//	PostTag::firstOrCreate([ // firstOrCreate- если нашел, то верни. Если не нашел, то создвй.
-		//		'tag_id' => $tag,
-		//		'post_id' => $post->id,
-		//	]);
+			DB::commit();
 
-		// 2. БОЛЕЕ ПРОФЕССИОНАЛЬНЫЙ СПОСОБ (->attach())
-		// Разделяю массив обычных переменных $data и массив $tags:
+		}catch(\Exception $exception){
+			DB::rollBack();
+			//dd($exception->getMessage());
+			return $exception->getMessage();
+		}
 
-		//dd(isset($data['tags'])); // если не выбран ни один tag - false
-		if (!isset($data['tags'])) $data['tags'] = []; // РАБОТАЕТ!
-		$tags = $data['tags']; // массив $tags в отдельную переменную
-
-
-		unset($data['tags']); // удаляю из $data массив $tags
-		//dd($data, $tags);
-
-		$post = Post::create($data); // мы получим новый пост, а из него id
-     
-		$post->tags()->attach($tags); // tags()-продолжаем запрос в базу в Post@tags(), а tags без () - массив из метода Post@tags() (return)
-
-		return $post; // добавили
+		return $post;
 	}
 
 
@@ -58,5 +55,28 @@ class Service
 		$post->tags()->sync($tags);
 		//$post = $post->fresh(); // ДОБАВИЛ: принудительное обновление
 		return $post->fresh(); // можно так
+	}
+
+
+	private function getCategoryId($item)
+	{
+		$category = !isset($item['id']) ? Category::create($item) : Category::find($item['id']);
+		return $category->id;
+	}
+
+	private function getTagIgs($tags)
+	{
+		foreach ($tags as $tag) {
+			//dd($tag); // проверка: array:2 ["id" => 20, "title" => "some new update title"]
+
+			$tagIds = []; // массив новых id
+
+			if (!isset($tag['id'])) // новый tag
+			{
+				$tag = !isset($tag['id']) ? Tag::create($tag) : Tag::find($tag['id']); // если тега нет - создай его, если есть - верни на его
+				$tagIds[] = $tag->id; // добавление нового тега
+			}
+		}
+		return $tagIds;
 	}
 }

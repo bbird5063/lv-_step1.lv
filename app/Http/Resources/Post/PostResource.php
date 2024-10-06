@@ -9,18 +9,18 @@ class PostResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
-     *
+		 * 
+     * Преобразуйте ресурс в массив.
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
     {
-      //dd('toArray!');  
 			return [
 					'id' => $this->id,
 					'title' => $this->title,
 					'content' => $this->content,
 					'image' => $this->image,
-					'category_id' => $this->category_id,
+					//'category_id' => $this->category_id,
 				];
 						
     }
