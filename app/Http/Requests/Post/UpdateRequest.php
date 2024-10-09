@@ -19,15 +19,15 @@ class UpdateRequest extends FormRequest
 	 *
 	 * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
 	 */
-	public function rules(): array // правила
+	public function rules(): array 
 	{
 		return [
 			'title' => 'string',
 			'content' => 'string',
 			'image' => 'string',
-			"likes"=> '',
-			'category_id' => '',
-			'tags' => '',
+			'likes'=> '',
+			'category' => '', // изменили
+			'tags' =>'',
 		];
 	}
 }

@@ -28,15 +28,6 @@ class IndexController extends BaseController // изменили на BaseContro
 		//$posts = Post::filter($filter)->paginate(10);
 		$posts = Post::filter($filter)->paginate($perPage, ['*'], 'page', $page); // вместо 10
 
-		/**
-		 * paginate
-		 * --------------
-		 * $perPage
-		 * ['*']
-		 * 'page'
-		 * $page
-		 */
-
 		return PostResource::collection($posts);
 
 		//return view('post.posts', compact('posts'));

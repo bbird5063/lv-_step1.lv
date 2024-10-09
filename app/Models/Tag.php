@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-    use HasFactory;
-
+	use HasFactory;
+	protected $guarded = []; // нашел в комментариях: либо false, либо [], либо ['tag_id'] (Защита массового присвоения)
+	
 	public function posts()
 	{
 		/**
@@ -22,6 +23,7 @@ class Tag extends Model
 		 * $relatedKey = null
 		 * $relation = null
 		 */
-		return $this->belongsToMany(Post::class, 'post_tags', 'tag_id','post_id');
+
+		return $this->belongsToMany(Post::class, 'post_tags', 'tag_id', 'post_id');
 	}
 }

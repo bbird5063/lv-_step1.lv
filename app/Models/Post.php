@@ -10,7 +10,7 @@ class Post extends Model
 {
     use HasFactory;
     use Filterable;
-    protected $guarded = false;
+    protected $guarded = false; // // НУЖНО! (Защита массового присвоения)
 
 
     public function category()
@@ -20,6 +20,6 @@ class Post extends Model
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class, 'post_tags', 'post_id', 'tag_id'); // изменил 'post_tag' на 'post_tags' - РАЗАБОТАЛО
+        return $this->belongsToMany(Tag::class, 'post_tags', 'post_id', 'tag_id');
     }
 }

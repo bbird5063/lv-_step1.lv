@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
+		protected $guarded = ['category_id'];  // НУЖНО! либо false, либо [], либо ['category_id'](Защита массового присвоения)
 		
 		public function posts() {
 			// hasMany => "имеет много"
