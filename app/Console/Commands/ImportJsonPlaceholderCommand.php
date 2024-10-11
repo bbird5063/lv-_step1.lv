@@ -34,7 +34,7 @@ class ImportJsonPlaceholderCommand extends Command
 		//dd(json_decode($response->getBody()->getContents())); // без json_decode() получим одно строку(с '\n'), а нам нужен массив и его получаем. "+"id": 100': '+' - к нам пришел объект и это его свойство. И обращение к нему $item->id.
 
 		$data = json_decode($response->getBody()->getContents());
-		foreach($data as $item) { // добавим в нашу БД
+		foreach ($data as $item) { // добавим в нашу БД
 			Post::firstOrCreate([
 				'title' => $item->title, // 1 аргумент: массив уникальных полей
 				'content' => $item->body,
@@ -43,7 +43,6 @@ class ImportJsonPlaceholderCommand extends Command
 				'content' => $item->body,
 				'category_id' => 2,
 			]);
-
 		}
 		dd('FINISH'); // Было 226, стало 326. Все Ок!
 	}
